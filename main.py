@@ -51,7 +51,7 @@ while True:
         pygame.mixer.music.stop()
         pygame.mixer.Sound.play(vitoria)
         
-    elif posYCar2 == 480 and movXCar2 >= 900 and movXCar2 > movXCar1:
+    elif posYcar2 == 480 and movXcar2 >= 900 and movXcar2 > movXcar1:
         tela.blit(textoAmarelo, (270,180))
         acabou = True
         pygame.mixer.music.stop()
