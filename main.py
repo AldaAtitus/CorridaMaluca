@@ -19,6 +19,7 @@ vitoria.set_volume(0.5)
 pygame.mixer.music.load("assets/trilha.mp3")
 pygame.mixer.music.play(-1) #looping
 acabou = False
+somDaVitoria = False
 while True:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -32,6 +33,11 @@ while True:
     if not acabou:
         movXcar1 = movXcar1 + random.randint(0,10)
         movXcar2 = movXcar2 + random.randint(0,10)
+    else:
+        pygame.mixer.music.stop()
+        if somDaVitoria == False:
+            pygame.mixer.Sound.play(vitoria)
+            somDaVitoria = True
     
     if movXcar1 > 1000:
         movXcar1 = 0
@@ -48,14 +54,12 @@ while True:
     if posYcar1 == 350 and movXcar1 >= 900 and movXcar1>movXcar2:
         tela.blit(textoVermelho, (270,70))
         acabou = True
-        pygame.mixer.music.stop()
-        pygame.mixer.Sound.play(vitoria)
+
         
     elif posYcar2 == 480 and movXcar2 >= 900 and movXcar2 > movXcar1:
         tela.blit(textoAmarelo, (270,180))
         acabou = True
-        pygame.mixer.music.stop()
-        pygame.mixer.Sound.play(vitoria)
+
     
     pygame.display.update()
     clock.tick(60)
