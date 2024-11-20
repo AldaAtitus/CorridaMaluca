@@ -73,11 +73,27 @@ while True:
         distancia1 = calc_dist_prim_seg(movXcar1, movXcar2, movXcar3)
         distancia2 = calc_dist_terc_seg(movXcar1, movXcar2, movXcar3)
         atualizaLogCorrida = 0
+    
+    posicoes = [
+        (movXcar1, "Vermelho"),
+        (movXcar2, "Amarelo"),
+        (movXcar3, "Azul")
+    ]
+    
+    posicoes.sort(reverse=True, key=lambda x: x[0])
+    fonte = pygame.font.Font("freesansbold.ttf", 20)
+    textoPrimeiro = fonte.render(f"1º Lugar: {posicoes[0][1]}", True, preto)
+    textoSegundo = fonte.render(f"2º Lugar: {posicoes[1][1]}", True, branco)
+    textoTerceiro = fonte.render(f"3º Lugar: {posicoes[2][1]}", True, branco)
+    tela.blit(textoPrimeiro, (810, 0))
+    tela.blit(textoSegundo, (810, 30))
+    tela.blit(textoTerceiro, (810, 60))
+    
     fonte = pygame.font.Font("freesansbold.ttf", 20)
     textoDistancia1 = fonte.render(f"Distância do segundo lugar para o primeiro: {distancia1}pixels", True, preto)
     textoDistancia2 = fonte.render(f"Distância do terceiro lugar para o segundo: {distancia2}pixels", True, branco)
-    tela.blit(textoDistancia1, (475, 0))
-    tela.blit(textoDistancia2, (475, 30))
+    tela.blit(textoDistancia1, (10, 570))
+    tela.blit(textoDistancia2, (10, 545))
     atualizaLogCorrida = atualizaLogCorrida + 1
     
     fonte = pygame.font.Font("freesansbold.ttf", 60) #ttf é a fonte
