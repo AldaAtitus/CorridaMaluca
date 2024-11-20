@@ -1,11 +1,11 @@
 import pygame
 import random
 from os import system
+from recursos.funcao import calc_dist_prim_seg, calc_dist_terc_seg
 pygame.init()
 system("cls")
 tamanho = (1000,592)
 clock = pygame.time.Clock()
-tamanho = (896,597)
 tela = pygame.display.set_mode(tamanho)
 icone = pygame.image.load("recursos/icone.ico")
 pygame.display.set_icon(icone)
@@ -32,11 +32,15 @@ pygame.mixer.music.load("recursos/trilha.mp3")
 pygame.mixer.music.play(-1) #looping
 acabou = False
 somDaVitoria = False
+atualizaLogCorrida = 0
+distancia1 = 0
+distancia2 = 0
+
 while True:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             quit()
-    
+
     tela.fill(branco)
     tela.blit(fundo, (0, 0))
     tela.blit(carro1, (movXcar1,posYcar1))
@@ -44,9 +48,9 @@ while True:
     tela.blit(carro3, (movXcar3,posYcar3))
     
     if not acabou:
-        movXcar1 = movXcar1 + random.randint(0,12)
-        movXcar2 = movXcar2 + random.randint(0,12)
-        movXcar3 = movXcar3 + random.randint(0,12)
+        movXcar1 = movXcar1 + random.randint(0,10)
+        movXcar2 = movXcar2 + random.randint(0,10)
+        movXcar3 = movXcar3 + random.randint(0,10)
     else:
         pygame.mixer.music.stop()
         if somDaVitoria == False:
@@ -64,26 +68,38 @@ while True:
     if movXcar3 > 1000:
         movXcar3 = 0
         posYcar3 = 410
-        
+    
+    if atualizaLogCorrida == 13:
+        distancia1 = calc_dist_prim_seg(movXcar1, movXcar2, movXcar3)
+        distancia2 = calc_dist_terc_seg(movXcar1, movXcar2, movXcar3)
+        atualizaLogCorrida = 0
+    fonte = pygame.font.Font("freesansbold.ttf", 20)
+    textoDistancia1 = fonte.render(f"Distância do segundo lugar para o primeiro: {distancia1}pixels", True, preto)
+    textoDistancia2 = fonte.render(f"Distância do terceiro lugar para o segundo: {distancia2}pixels", True, branco)
+    tela.blit(textoDistancia1, (475, 0))
+    tela.blit(textoDistancia2, (475, 30))
+    atualizaLogCorrida = atualizaLogCorrida + 1
+    
     fonte = pygame.font.Font("freesansbold.ttf", 60) #ttf é a fonte
     textoVermelho = fonte.render("Vermelho Ganhou!!!", True, vermelho)
     textoAmarelo = fonte.render("Amarelo Ganhou!", True, amarelo)
     textoAzul = fonte.render("Azul Ganhou!", True, azul)
+    
     
     if acabou == True:
         tela.fill(branco)
         tela.blit(finalCorrida, (0, 0))
         
     if posYcar1 == 350 and movXcar1 >= 900 and movXcar1> movXcar2 and movXcar3:
-        tela.blit(textoVermelho, (270,70))
+        tela.blit(textoVermelho, (200,70))
         acabou = True
     
     elif posYcar2 == 480 and movXcar2 >= 900 and movXcar2 > movXcar1 and movXcar3:
-        tela.blit(textoAmarelo, (270,70))
+        tela.blit(textoAmarelo, (200,70))
         acabou = True
     
     elif posYcar3 == 410 and movXcar3 >= 900 and movXcar3 > movXcar1 and  movXcar2:
-        tela.blit(textoAzul, (270,70))
+        tela.blit(textoAzul, (200,70))
         acabou = True
 
     pygame.display.update()
